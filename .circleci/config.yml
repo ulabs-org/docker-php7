@@ -7,11 +7,11 @@ jobs:
       - checkout
       - setup_remote_docker
       - run:
-          command: docker build -t imkulikov/php7:${CIRCLE_TAG} .
+          command: docker build -t imkulikov/php7 .
       - run:
           command: docker login -u ${DOCKER_USER} -p ${DOCKER_PASS}
       - run:
-          command: docker push imkulikov/php7:${CIRCLE_TAG}
+          command: docker push imkulikov/php7
 workflows:
   version: 2
   build:
