@@ -1,3 +1,7 @@
+[![CircleCI](https://img.shields.io/circleci/project/github/ulabs-org/docker-php7.svg)](https://circleci.com/gh/ulabs-org/docker-php7/tree/master)
+[![Docker Build Statu](https://img.shields.io/docker/build/imkulikov/php7.svg)](https://hub.docker.com/r/imkulikov/php7/)
+[![Docker Stars](https://img.shields.io/docker/stars/imkulikov/php7.svg)](https://hub.docker.com/r/imkulikov/php7/)
+
 # Alpine + PHP7
 
 ## Docker
