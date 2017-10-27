@@ -10,8 +10,6 @@ jobs:
       - run:
           command: docker build -t imkulikov/php7:${CIRCLE_TAG} .
       - run:
-         command: docker run -it imkulikov/php7:${CIRCLE_TAG} sh -c "php -v && php -m"
-      - run:
           command: docker login -u ${DOCKER_USER} -p ${DOCKER_PASS}
       - run:
           command: docker push imkulikov/php7:${CIRCLE_TAG}
