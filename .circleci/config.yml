@@ -1,13 +1,14 @@
 version: 2
 jobs:
   build:
-    docker:
-      - image: docker:17.07.0-ce-git
+    machine: true
     steps:
       - checkout
       - setup_remote_docker
       - run:
           command: docker build -t imkulikov/php7:${CIRCLE_TAG} .
+      - run:
+         command: docker run -it imkulikov/php7:${CIRCLE_TAG} sh -c "php -v && php -m"
       - run:
           command: docker login -u ${DOCKER_USER} -p ${DOCKER_PASS}
       - run:
