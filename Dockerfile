@@ -33,6 +33,10 @@ ENV PHP_MEMORY_LIMIT=256M \
    PHP_ZEND_ASSERTIONS=-1 \
    PHP_IGBINARY_COMPACT_STRINGS=1
 
+ENV PHP_VERSION=7.1.10-r0 \
+    IMAGICK_VERSION=3.4.3-r3 \
+    MONGODB_VERSION=1.3.1-r0
+
 RUN set -x \
     && echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories
 
@@ -42,48 +46,48 @@ RUN apk add --no-cache \
     bash
 
 RUN apk add --no-cache \
-        php7-session=7.1.6-r0 \
-        php7-mcrypt=7.1.6-r0 \
-        php7-soap=7.1.6-r0 \
-        php7-openssl=7.1.6-r0 \
-        php7-gmp=7.1.6-r0 \
-        php7-pdo_odbc=7.1.6-r0 \
-        php7-json=7.1.6-r0 \
-        php7-dom=7.1.6-r0 \
-        php7-pdo=7.1.6-r0 \
-        php7-zip=7.1.6-r0 \
-        php7-mysqli=7.1.6-r0 \
-        php7-sqlite3=7.1.6-r0 \
-        php7-pdo_pgsql=7.1.6-r0 \
-        php7-bcmath=7.1.6-r0 \
-        php7-gd=7.1.6-r0 \
-        php7-odbc=7.1.6-r0 \
-        php7-pdo_mysql=7.1.6-r0 \
-        php7-pdo_sqlite=7.1.6-r0 \
-        php7-gettext=7.1.6-r0 \
-        php7-xmlreader=7.1.6-r0 \
-        php7-xmlwriter=7.1.6-r0 \
-        php7-xmlrpc=7.1.6-r0 \
-        php7-xml=7.1.6-r0 \
-        php7-simplexml=7.1.6-r0 \
-        php7-bz2=7.1.6-r0 \
-        php7-iconv=7.1.6-r0 \
-        php7-pdo_dblib=7.1.6-r0 \
-        php7-curl=7.1.6-r0 \
-        php7-ctype=7.1.6-r0 \
-        php7-pcntl=7.1.6-r0 \
-        php7-posix=7.1.6-r0 \
-        php7-phar=7.1.6-r0 \
-        php7-opcache=7.1.6-r0 \
-        php7-mbstring=7.1.6-r0 \
-        php7-zlib=7.1.6-r0 \
-        php7-fileinfo=7.1.6-r0 \
-        php7-tokenizer=7.1.6-r0 \
-        php7-exif=7.1.6-r0 \
-        php7-imagick=3.4.3-r2 \
-        php7-mongodb=1.2.8-r1 \
-        php7-fpm=7.1.6-r0 \
-        php7=7.1.6-r0 \
+        php7-session=${PHP_VERSION} \
+        php7-mcrypt=${PHP_VERSION} \
+        php7-soap=${PHP_VERSION} \
+        php7-openssl=${PHP_VERSION} \
+        php7-gmp=${PHP_VERSION} \
+        php7-pdo_odbc=${PHP_VERSION} \
+        php7-json=${PHP_VERSION} \
+        php7-dom=${PHP_VERSION} \
+        php7-pdo=${PHP_VERSION} \
+        php7-zip=${PHP_VERSION} \
+        php7-mysqli=${PHP_VERSION} \
+        php7-sqlite3=${PHP_VERSION} \
+        php7-pdo_pgsql=${PHP_VERSION} \
+        php7-bcmath=${PHP_VERSION} \
+        php7-gd=${PHP_VERSION} \
+        php7-odbc=${PHP_VERSION} \
+        php7-pdo_mysql=${PHP_VERSION} \
+        php7-pdo_sqlite=${PHP_VERSION} \
+        php7-gettext=${PHP_VERSION} \
+        php7-xmlreader=${PHP_VERSION} \
+        php7-xmlwriter=${PHP_VERSION} \
+        php7-xmlrpc=${PHP_VERSION} \
+        php7-xml=${PHP_VERSION} \
+        php7-simplexml=${PHP_VERSION} \
+        php7-bz2=${PHP_VERSION} \
+        php7-iconv=${PHP_VERSION} \
+        php7-pdo_dblib=${PHP_VERSION} \
+        php7-curl=${PHP_VERSION} \
+        php7-ctype=${PHP_VERSION} \
+        php7-pcntl=${PHP_VERSION} \
+        php7-posix=${PHP_VERSION} \
+        php7-phar=${PHP_VERSION} \
+        php7-opcache=${PHP_VERSION} \
+        php7-mbstring=${PHP_VERSION} \
+        php7-zlib=${PHP_VERSION} \
+        php7-fileinfo=${PHP_VERSION} \
+        php7-tokenizer=${PHP_VERSION} \
+        php7-exif=${PHP_VERSION} \
+        php7-imagick=${IMAGICK_VERSION} \
+        php7-mongodb=${MONGODB_VERSION} \
+        php7-fpm=${PHP_VERSION} \
+        php7=${PHP_VERSION} \
         git \
         less \
         nano \
@@ -92,26 +96,35 @@ RUN apk add --no-cache \
         rabbitmq-c \
         libmemcached
 
-RUN apk add --no-cache --virtual .build-deps git file re2c autoconf make g++ php7-dev=7.1.6-r0 libmemcached-dev cyrus-sasl-dev zlib-dev musl rabbitmq-c-dev pcre-dev && \
-    git clone --depth=1 -b 2.0.4 https://github.com/igbinary/igbinary.git /tmp/php-igbinary && \
+# https://github.com/igbinary/igbinary
+# https://github.com/php-memcached-dev/php-memcached
+# https://github.com/phpredis/phpredis
+# https://github.com/pdezwart/php-amqp
+ENV REDIS_VERSION=3.1.4 \
+    MEMCACHED_VERSION=3.0.3 \
+    IGBINARY_VERSION=2.0.4 \
+    AMPQ_VERSION=1.9.3
+
+RUN apk add --no-cache --virtual .build-deps git file re2c autoconf make g++ php7-dev=${PHP_VERSION} libmemcached-dev cyrus-sasl-dev zlib-dev musl rabbitmq-c-dev pcre-dev && \
+    git clone --depth=1 -b ${IGBINARY_VERSION} https://github.com/igbinary/igbinary.git /tmp/php-igbinary && \
     cd /tmp/php-igbinary && \
     phpize && ./configure CFLAGS="-O2 -g" --enable-igbinary && make && make install && \
     cd .. && rm -rf /tmp/php-igbinary/ && \
     echo 'extension=igbinary.so' >> /etc/php7/conf.d/igbinary.ini && \
     \
-    git clone --depth=1 -b v3.0.3 https://github.com/php-memcached-dev/php-memcached.git /tmp/php-memcached && \
+    git clone --depth=1 -b v${MEMCACHED_VERSION} https://github.com/php-memcached-dev/php-memcached.git /tmp/php-memcached && \
     cd /tmp/php-memcached && \
     phpize && ./configure --disable-memcached-sasl && make && make install && \
     cd .. && rm -rf /tmp/php-memcached/ && \
     echo 'extension=memcached.so' >> /etc/php7/conf.d/memcached.ini && \
     \
-    git clone --depth=1 -b 3.1.2 https://github.com/phpredis/phpredis.git /tmp/php-redis && \
+    git clone --depth=1 -b ${REDIS_VERSION} https://github.com/phpredis/phpredis.git /tmp/php-redis && \
     cd /tmp/php-redis && \
     phpize &&  ./configure --enable-redis-igbinary && make && make install && \
     cd .. && rm -rf /tmp/php-redis/ && \
     echo 'extension=redis.so' >> /etc/php7/conf.d/redis.ini && \
     \
-    git clone --depth=1 -b v1.9.0 https://github.com/pdezwart/php-amqp.git /tmp/php-amqp && \
+    git clone --depth=1 -b v${AMPQ_VERSION} https://github.com/pdezwart/php-amqp.git /tmp/php-amqp && \
     cd /tmp/php-amqp && \
     phpize && ./configure && make && make install && \
     cd .. && rm -rf /tmp/php-amqp/ && \
