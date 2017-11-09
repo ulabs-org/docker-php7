@@ -35,7 +35,7 @@ ENV PHP_MEMORY_LIMIT=256M \
 
 ENV PHP_VERSION=7.1.10-r0 \
     IMAGICK_VERSION=3.4.3-r3 \
-    MONGODB_VERSION=1.3.1-r0
+    MONGODB_VERSION=1.3.1-r0 
 
 RUN set -x \
     && echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories
@@ -94,6 +94,7 @@ RUN apk add --no-cache \
         unzip \
         openssh \
         rabbitmq-c \
+        imagemagick \
         libmemcached
 
 # https://github.com/igbinary/igbinary
