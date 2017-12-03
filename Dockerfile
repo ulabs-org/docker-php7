@@ -33,17 +33,17 @@ ENV PHP_MEMORY_LIMIT=256M \
    PHP_ZEND_ASSERTIONS=-1 \
    PHP_IGBINARY_COMPACT_STRINGS=1
 
-ENV PHP_VERSION=7.1.11-r0 \
+RUN apk add --no-cache \
+    ca-certificates \
+    curl \
+    bash
+
+ENV PHP_VERSION=7.1.12-r0 \
     IMAGICK_VERSION=3.4.3-r3 \
     MONGODB_VERSION=1.3.1-r0 
 
 RUN set -x \
     && echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories
-
-RUN apk add --no-cache \
-    ca-certificates \
-    curl \
-    bash
 
 RUN apk add --no-cache \
         php7-session=${PHP_VERSION} \
@@ -102,8 +102,8 @@ RUN apk add --no-cache \
 # https://github.com/phpredis/phpredis
 # https://github.com/pdezwart/php-amqp
 ENV REDIS_VERSION=3.1.4 \
-    MEMCACHED_VERSION=3.0.3 \
-    IGBINARY_VERSION=2.0.4 \
+    MEMCACHED_VERSION=3.0.4 \
+    IGBINARY_VERSION=2.0.5 \
     AMPQ_VERSION=1.9.3
 
 RUN apk add --no-cache --virtual .build-deps git file re2c autoconf make g++ php7-dev=${PHP_VERSION} libmemcached-dev cyrus-sasl-dev zlib-dev musl rabbitmq-c-dev pcre-dev && \
