@@ -47,6 +47,7 @@ hash
 iconv
 igbinary
 imagick
+intl
 json
 libxml
 mbstring
