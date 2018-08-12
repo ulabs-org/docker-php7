@@ -11,7 +11,7 @@ jobs:
       - run:
           command: docker login -u ${DOCKER_USER} -p ${DOCKER_PASS}
       - run:
-          command: docker push imkulikov/php7
+          command: docker push imkulikov/php7:$(git tag --contains)
 workflows:
   version: 2
   build:
