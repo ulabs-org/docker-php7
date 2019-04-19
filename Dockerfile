@@ -1,4 +1,4 @@
-FROM alpine:3.8
+FROM alpine:3.9
 
 ENV TERM xterm
 
@@ -97,7 +97,7 @@ RUN apk add --no-cache \
 # https://github.com/php-memcached-dev/php-memcached
 # https://github.com/igbinary/igbinary
 # https://github.com/pdezwart/php-amqp
-ENV IGBINARY_VERSION=2.0.6
+ENV IGBINARY_VERSION=3.0.1
     # \
     # REDIS_VERSION=4.0.2 \
     # MEMCACHED_VERSION=3.0.4 \
