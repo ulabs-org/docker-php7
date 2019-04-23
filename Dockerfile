@@ -46,7 +46,7 @@ RUN apk add --no-cache \
         imagemagick \
 # PHP:
         php7-session \
-        php7-mcrypt \
+        php7-pecl-mcrypt \
         php7-soap \
         php7-openssl \
         php7-gmp \
@@ -84,65 +84,20 @@ RUN apk add --no-cache \
         php7-fileinfo \
         php7-tokenizer \
         php7-exif \
-        php7-imagick \
-        php7-mongodb \
+        php7-pecl-imagick \
+        php7-pecl-mongodb \
         php7-fpm \
-        php7-redis \
-        php7-memcached \
-        php7-amqp \
-        php7-gmagick \
+        php7-pecl-redis \
+        php7-pecl-memcached \
+        php7-pecl-amqp \
+        php7-pecl-gmagick \
+        php7-pecl-igbinary \
         php7
 
-# https://github.com/phpredis/phpredis
-# https://github.com/php-memcached-dev/php-memcached
-# https://github.com/igbinary/igbinary
-# https://github.com/pdezwart/php-amqp
-ENV IGBINARY_VERSION=3.0.1
-    # \
-    # REDIS_VERSION=4.0.2 \
-    # MEMCACHED_VERSION=3.0.4 \
-    # AMPQ_VERSION=1.9.3
-
-RUN apk add --no-cache --virtual .build-deps \
-        git \
-        file \
-        re2c \
-        autoconf \
-        make \
-        g++ \
-        php7-dev \
-        # libmemcached-dev \
-        # cyrus-sasl-dev \
-        # zlib-dev \
-        # rabbitmq-c-dev \
-        # pcre-dev \
-        musl \
-    && \
-    git clone --depth=1 -b ${IGBINARY_VERSION} https://github.com/igbinary/igbinary.git /tmp/php-igbinary && \
-    cd /tmp/php-igbinary && \
-    phpize && ./configure CFLAGS="-O2 -g" --enable-igbinary && make && make install && \
-    cd .. && rm -rf /tmp/php-igbinary/ && \
-    echo 'extension=igbinary.so' >> /etc/php7/conf.d/igbinary.ini && \
-    \
-    # git clone --depth=1 -b v${MEMCACHED_VERSION} https://github.com/php-memcached-dev/php-memcached.git /tmp/php-memcached && \
-    # cd /tmp/php-memcached && \
-    # phpize && ./configure --disable-memcached-sasl && make && make install && \
-    # cd .. && rm -rf /tmp/php-memcached/ && \
-    # echo 'extension=memcached.so' >> /etc/php7/conf.d/memcached.ini && \
-    # \
-    # git clone --depth=1 -b ${REDIS_VERSION} https://github.com/phpredis/phpredis.git /tmp/php-redis && \
-    # cd /tmp/php-redis && \
-    # phpize &&  ./configure --enable-redis-igbinary && make && make install && \
-    # cd .. && rm -rf /tmp/php-redis/ && \
-    # echo 'extension=redis.so' >> /etc/php7/conf.d/redis.ini && \
-    # \
-    # git clone --depth=1 -b v${AMPQ_VERSION} https://github.com/pdezwart/php-amqp.git /tmp/php-amqp && \
-    # cd /tmp/php-amqp && \
-    # phpize && ./configure && make && make install && \
-    # cd .. && rm -rf /tmp/php-amqp/ && \
-    # echo 'extension=amqp.so' >> /etc/php7/conf.d/amqp.ini && \
-    # \
-    apk del .build-deps
+# SEGFAULT:
+RUN set -x \
+    && apk del php7-pecl-gmagick \
+    && rm -rf /etc/php7/conf.d/gmagick.ini
 
 RUN rm -rf /etc/php7/php.ini \
     && mkdir /webapp \
